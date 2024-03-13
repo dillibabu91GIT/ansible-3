@@ -1,1 +1,36 @@
+name: Deploy JBoss Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout ansible-2 repository
+        uses: actions/checkout@v2
+        with:
+          repository: dillibabu91GIT/ansible-2
+          ref: ${{ github.event.inputs.branch }}
+
+      # Remove or comment out the git clone step if you want to use the existing ansible-1 directory
+
+      - name: Clone ansible-1 repository
+        run: |
+          if [ ! -d "../ansible-1" ]; then
+            git clone https://github.com/dillibabu91GIT/ansible-1 ../ansible-1
+          else
+            echo "Directory ../ansible-1 already exists."
+          fi
+
+      - name: Debug Working Directory
+        run: |
+          ls -al
+          pwd
+          
+      - name: Run Ansible playbook
+        env:
+          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+        run: |
+          ansible-playbook -vvv -i inventory.txt playbook/main.yml --extra-vars "GITHUB_WORKSPACE=${{ github.workspace }}"
 

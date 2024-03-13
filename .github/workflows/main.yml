@@ -7,10 +7,10 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Checkout ansible-2 repository
+      - name: Checkout ansible-3 repository
         uses: actions/checkout@v2
         with:
-          repository: dillibabu91GIT/ansible-2
+          repository: dillibabu91GIT/ansible-3
           ref: ${{ github.event.inputs.branch }}
 
       # Remove or comment out the git clone step if you want to use the existing ansible-1 directory
